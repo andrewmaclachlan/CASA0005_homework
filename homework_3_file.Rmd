@@ -166,7 +166,7 @@ How about taking each climate scenario and plotting the distribution of mean ann
 * take a mean of all the months
 * extract the mean of all the months for the 21 cities
 * plot it in violin or box plots
-* this is the test branch
+* this is the example
 
 ```{r}
 
