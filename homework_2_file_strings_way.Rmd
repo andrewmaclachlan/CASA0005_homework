@@ -10,7 +10,7 @@ library(here)
 library(sf)
 library(janitor)
 library(tmap)
-
+# hello
 
 # read
 report <- read_csv(here::here("homework_2", 

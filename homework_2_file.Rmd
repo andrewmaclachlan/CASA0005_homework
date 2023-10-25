@@ -9,8 +9,6 @@ library(tmap)
 
 ```{r}
 # read
-report <- read_csv("homework_2/Report_Card_Assessment_Data_2018-19_School_Year.csv")
-
 report <- read_csv(here::here("homework_2", 
                    "Report_Card_Assessment_Data_2018-19_School_Year.csv"),
                               na= "NULL")
@@ -41,7 +39,7 @@ Datatypelist <- report %>%
 Datatypelist
 
 county_only <- report %>%
-  clean_names(.) %>%
+  clean_names() %>%
   select(county, organization_level, test_subject, count_met_standard, 
          count_of_students_expected_to_test, grade_level)%>%
   # the != means don't select this, but select everything else
@@ -66,21 +64,18 @@ We now have the percent that me from the counties and and need to work out what 
 ```{r}
 
 state_average <- county_only%>%
-  mutate(sum_met=sum(total_county_met_standard))%>%
-  mutate(sum_to_test =sum(total_county_to_test))%>%
-  mutate(state_average=((sum_met/sum_to_test)*100))%>%
-  head(n=1)%>%
-  pull(state_average)
+  summarise(state_average= mean(percent_met_per_county))%>%
+  pull()
 
-#or this works as well
-# na.rm = removes any NAs
-# summarise at allows us to select columns to summarise - in this case sum the column
+# or
+state_average2 <- mean(county_only$percent_met_per_county)
 
-state_average2 <- county_only %>%
-  summarise_at(c("total_county_met_standard", "total_county_to_test"), sum, na.rm = TRUE)%>%
-  mutate(state_average=((total_county_met_standard /total_county_to_test)*100))%>%
-  pull(state_average)
-  
+#or
+state_average3 <- county_only%>%
+  select(percent_met_per_county)%>%
+  summarise(state_average=mean(percent_met_per_county))%>%
+  pull()
+
 ```
 
 Ok, now we need to make a column that compares each county value to the state average and some text to say if it is above or below...
@@ -131,5 +126,9 @@ Let's map...
   tm_layout(title = "Counties above or below state avearge for science in all grades", 
             legend.position = c("right", "bottom"))
 
+
+tmap_mode("plot")
+tm_basemap("Stamen.Watercolor") +
+tm_shape(metro) + tm_bubbles(size = "pop2020", col = "red")
 
 ```
