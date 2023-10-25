@@ -31,7 +31,7 @@ filter cities
 ```{r}
 
 spanish_cities <- world_cities %>%
-  janitor::clean_names()%>%
+  janitor::clean_names(.)%>%
   dplyr::filter(cntry_name=="Spain")
 
 
