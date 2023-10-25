@@ -10,7 +10,14 @@ library(here)
 library(sf)
 library(janitor)
 library(tmap)
+<<<<<<< HEAD
 
+=======
+# hello
+# local 
+# test
+# branch
+>>>>>>> 752ed52db30e01da8dbe3ac8f7f11e7a07880481
 
 # read
 report <- read_csv(here::here("homework_2", 
