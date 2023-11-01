@@ -1,5 +1,4 @@
 
-hello
 
 This approach uses strings to remove the % and make the column numeric...
 
