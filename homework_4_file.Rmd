@@ -63,7 +63,7 @@ Join_HDI <- World %>%
 # 261 if using "aff_iso", 251 if using "iso". Could filter out the NA values.
 ```
 
-If using affiliate code then Aruba is part of the Netherlands
+If using affiliate code then Aruba (country) is part of the Netherlands (affiliate country)
 
 If using iso code then Aruba will have no data as it has no data in the HDI. 
 
@@ -80,7 +80,9 @@ Join_HDI_2 <- World %>%
 # Problems 
 
 * With Join_HDI there are 11 rows for Antarctica **if using aff_iso** - be sure to use iso column or remove the NA values as in the aff_iso Antarctica is NA
-* With Join_HDI_2 the entries for other islands aren't joined as they don't have the same name...e.g. Anguilla, Bermuda, Falkland Islands.....
+* With Join_HDI_2 the entries for other islands aren't joined as they don't have the same name...for example, Anguilla, Bermuda, Falkland Islands..... 
+
+These are The British Overseas Territories (BOTs), also known as the United Kingdom Overseas Territories (UKOTs), fourteen territories with a constitutional and historical link with the United Kingdom, but do not form part of the United Kingdom itself.
 
 ```{r}
 Join_HDI_GB<-Join_HDI %>%
