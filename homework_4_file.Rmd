@@ -93,4 +93,4 @@ Join_HDI_2_GB<-Join_HDI_2 %>%
 ```
 
 
-...next time we will make a map using different repos
+..next time we will make a map using different repos
