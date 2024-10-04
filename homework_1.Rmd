@@ -3,7 +3,6 @@ title: "homework"
 output: html_document
 date: "2022-10-06"
 ---
-
 ## load library
 
 ```{r}
@@ -24,8 +23,11 @@ employed_2018 <- read_csv("data/stats_edited.csv")
 
 
 # added test to last row to make character for example
-Datatypelist <- shape_simple %>% 
+Datatypelist <- shape_simple %>%
+  st_drop_geometry%>% 
+# summarise all only works with .tbl now (not sf) so we drop geometry to check  
   summarise_all(class)
+
 Datatypelist
 
 
@@ -33,16 +35,15 @@ Datatypelist
 #   summarise_all(class)
 # Datatypelist
 
+# alterantively we can summarise the sf
 summary(shape_simple)
 
 shape_simple %>%
   st_geometry()%>%
   plot()
 ```
-
-## Data manipulation
-
-join on the description
+## Data manipulation 
+join on the description 
 
 ```{r}
 # join on the description 
@@ -55,7 +56,6 @@ shape2 <- shape_simple%>%
 ```
 
 Join on the ID by making the column numeric
-
 ```{r}
 
 
@@ -90,3 +90,5 @@ my_map<-shape2 %>%
 
 my_map
 ```
+
+
