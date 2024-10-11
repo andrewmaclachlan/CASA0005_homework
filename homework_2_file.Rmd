@@ -126,9 +126,4 @@ Let's map...
   tm_layout(title = "Counties above or below state avearge for science in all grades", 
             legend.position = c("right", "bottom"))
 
-
-tmap_mode("plot")
-tm_basemap("Stamen.Watercolor") +
-tm_shape(metro) + tm_bubbles(size = "pop2020", col = "red")
-
 ```
