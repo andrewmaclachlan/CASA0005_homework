@@ -126,4 +126,5 @@ Let's map...
   tm_layout(title = "Counties above or below state avearge for science in all grades", 
             legend.position = c("right", "bottom"))
 
+
 ```
