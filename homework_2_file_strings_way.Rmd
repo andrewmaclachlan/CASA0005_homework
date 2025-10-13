@@ -45,25 +45,23 @@ joined_data <- shape %>%
             by = c("countylabe" = "county"))
 
 
-bbox_county <- shape %>%
-  st_bbox(.) %>% 
-  tmaptools::read_osm(., type = "osm", zoom = NULL)
+# bbox_county <- shape %>%
+#   st_bbox(.) %>% 
+#   tmaptools::read_osm(., type = "osm", zoom = NULL)
 
-tm_shape(bbox_county)+
-  tm_rgb()+
-  
-  
+# tm_shape(bbox_county)+
+#   tm_rgb()+
+
+
   tm_shape(joined_data) + 
-  tm_polygons("average_met", 
-              style="pretty",
-              palette="Blues",
-              midpoint=NA,
-              #title="Number of years",
-              alpha = 0.5) + 
-  tm_compass(position = c("left", "bottom"),type = "arrow") + 
-  tm_scale_bar(position = c("left", "bottom")) +
-  tm_layout(title = "Percent met", legend.position = c("right", "bottom"))
-
+  tm_polygons(fill="average_met",
+              fill.scale = tm_scale_intervals(
+                values="brewer.bu_pu"),
+              fill_alpha=0.5)+
+  tm_compass(position = c("left", "bottom"),type = "arrow")+
+  tm_scalebar(position = c("left", "bottom")) +
+  tm_title_out("Percent met", 
+           position=tm_pos_out("center", "top"))
 
   
 ```

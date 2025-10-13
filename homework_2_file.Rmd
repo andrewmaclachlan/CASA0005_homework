@@ -83,7 +83,7 @@ Ok, now we need to make a column that compares each county value to the state av
 ```{r}
 county_only_above_below_state <- county_only %>%
   mutate(difference_to_state=(percent_met_per_county-state_average))%>%
-  mutate(across(difference_to_state , round, 0))%>%
+mutate(across(difference_to_state, ~ round(.x, 0)))%>%
   mutate(above_below = case_when(difference_to_state<0 ~ "below",
                                    difference_to_state>0 ~ "above",
                                    difference_to_state==0 ~ "equal"
@@ -115,16 +115,14 @@ Let's map...
 #  tm_rgb()+
 
   tm_shape(joined_data) + 
-  tm_polygons("above_below", 
-             # style="pretty",
-              palette="Blues",
-              midpoint=NA,
-              #title="Number of years",
-              alpha = 0.5) + 
-  tm_compass(position = c("left", "bottom"),type = "arrow") + 
-  tm_scale_bar(position = c("left", "bottom")) +
-  tm_layout(title = "Counties above or below state avearge for science in all grades", 
-            legend.position = c("right", "bottom"))
+  tm_polygons(fill="above_below",
+              fill.scale = tm_scale_categorical(
+                values="brewer.bu_pu"),
+              fill_alpha=0.5)+
+  tm_compass(position = c("left", "bottom"),type = "arrow")+
+  tm_scalebar(position = c("left", "bottom")) +
+  tm_title_out("Counties above or below state avearge for science in all grades", 
+           position=tm_pos_out("center", "top"))
 
 
 ```
