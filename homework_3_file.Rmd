@@ -1,11 +1,10 @@
 ```{r}
-  library(sf)
+library(sf)
 library(here)
 library(janitor)
 library(tidyverse)
 library(terra)
 library(ggplot2)
-
 ```
 
 Read in data
@@ -107,6 +106,7 @@ Or make a join ID column in the original point sf and use that to join...
 ```{r}
 
 spanish_cities_join_ID <- spanish_cities %>%
+  # make a new column with first row as 1 and the number ends at the last row (e.g. last row 10 = id of 10)
   dplyr::mutate(join_id= 1:n())
 ```
 
@@ -124,30 +124,33 @@ spain_city_diff2 <- spanish_cities_join_ID%>%
 Drop the geometry and make a facet plot of differences per month
 
 ```{r}
-# all cities in spain where there is data
 
-
+# extract just the months (jan - december) columns
 city_climate_diff <- spain_city_diff2 %>%
   dplyr::select(c(,16:27))%>%
   sf::st_drop_geometry(.)%>%
   dplyr::as_tibble()
 
+#pivot the months longer
 tidy_city_diff <- city_climate_diff %>%
   tidyr::pivot_longer(everything(), 
                names_to="Months", 
                values_to="temp_diff")
 
+# change the months to a factor column type (levels / ordered categories) this will be to facet
 facet_plot <- tidy_city_diff %>%
-  dplyr::mutate(Months = factor(Months, levels = c("Jan","Feb","Mar",
-                                            "Apr","May","Jun",
-                                            "Jul","Aug","Sep",
-                                            "Oct","Nov","Dec")))
+  dplyr::mutate(Months = factor(Months, levels = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")))
+
 # Plot faceted histogram
-plot<-ggplot(facet_plot, aes(x=temp_diff, na.rm=TRUE))+
+plot<-ggplot(facet_plot, 
+             # plot the temp data
+             aes(x=temp_diff, na.rm=TRUE))+
+  #plot with histogram
   geom_histogram(color="black", binwidth = .1)+
   labs(title="Ggplot2 faceted difference in climate scenarios of max temp", 
        x="Temperature",
        y="Frequency")+
+  # use the levels to facet
   facet_grid(Months ~ .)+
   theme(plot.title = element_text(hjust = 0.5))
 
