@@ -33,9 +33,10 @@ World <- st_read("homework_4/World_Countries_(Generalized)/World_Countries__Gene
 * HDI has ISO3
 * We could join on country name?
 
-Select columns we want and change country name to country code, using the `countrycode` package
+1. Select columns we want 
+2. change country name to country code, using the `countrycode` package
 
-We could also just join it without this on the country name column 
+We could also just join it without this on the country name column but best not to join using character fields. 
 
 Some notes:
 
@@ -89,8 +90,11 @@ Join_HDI_2 <- World %>%
 
 ## Problems 
 
-* With Join_HDI there are 11 rows for Antarctica **if using aff_iso** - be sure to use iso column or remove the NA values as in the aff_iso Antarctica is NA. Within the HDI dataset there are a series of rows for collections (e.g. World and Very high human development counties). So this join is being done on the `NA` values. For example, the `aff_iso` for Antarctica is NA and the ISO code for Very high human development counties is also NA!
+### If using affiliate ISO to join
 
+* With Join_HDI there are 11 rows for Antarctica **if using aff_iso** - be sure to use iso column or remove the NA values as in the aff_iso Antarctica is NA. 
+
+* Within the HDI dataset there are a series of rows for collections (e.g. World and Very high human development counties). So this join is being done on the `NA` values. For example, the `aff_iso` for Antarctica is NA and the ISO code for Very high human development counties is also NA!
 
 * With Join_HDI_2 (that uses country name to join) the entries for other islands aren't joined as they don't have the same name...for example, Anguilla, Bermuda, Falkland Islands..... 
 
@@ -99,12 +103,12 @@ These are The British Overseas Territories (BOTs), also known as the United King
 Should the HDI value for the UK be assigned to the The British Overseas Territories ?
 
 ```{r}
+# difference only if used aff_iso to join and make Join_HDI
 Join_HDI_GB<-Join_HDI %>%
   filter(aff_iso=="GB")
 
 Join_HDI_2_GB<-Join_HDI_2 %>%
   filter(aff_iso=="GB")
 ```
-
 
 ..next time we will make a map using different repos
