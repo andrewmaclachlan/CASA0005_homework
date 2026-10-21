@@ -1,7 +1,6 @@
 ```{r}
 # packages
 library(tidyverse)
-library(here)
 library(sf)
 library(janitor)
 library(tmap)
@@ -9,11 +8,9 @@ library(tmap)
 
 ```{r}
 # read
-report <- read_csv(here::here("homework_2", 
-                   "Report_Card_Assessment_Data_2018-19_School_Year.csv"),
-                              na= "NULL")
+report <- read_csv("homework_2/Report_Card_Assessment_Data_2018-19_School_Year.csv", na= "NULL")
 
-shape <- st_read(here::here("homework_2",                          "Washington_Counties_with_Natural_Shoreline___washsh_area",                           "Washington_Counties_with_Natural_Shoreline___washsh_area.shp"))
+shape <- st_read("homework_2/Washington_Counties_with_Natural_Shoreline___washsh_area/Washington_Counties_with_Natural_Shoreline___washsh_area.shp")
 ```
 
 
@@ -59,7 +56,7 @@ county_only <- report %>%
 
 ```
 
-We now have the percent that me from the counties and and need to work out what the state average is....
+We now have the percent that met standard from the counties and and need to work out what the state average is....
 
 ```{r}
 
