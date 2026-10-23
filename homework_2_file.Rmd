@@ -60,18 +60,7 @@ We now have the percent that met standard from the counties and and need to work
 
 ```{r}
 
-state_average <- county_only%>%
-  summarise(state_average= mean(percent_met_per_county))%>%
-  pull()
-
-# or
-state_average2 <- mean(county_only$percent_met_per_county)
-
-#or
-state_average3 <- county_only%>%
-  select(percent_met_per_county)%>%
-  summarise(state_average=mean(percent_met_per_county))%>%
-  pull()
+state_average= sum(county_only$total_county_met_standard) / sum(county_only$total_county_to_test) * 100
 
 ```
 
