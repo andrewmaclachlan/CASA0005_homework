@@ -1,27 +1,27 @@
 ```{r}
 library(sf)
-library(here)
 library(janitor)
 library(tidyverse)
 library(terra)
 library(ggplot2)
+library(tidyterra) #optional 
 ```
 
 Read in data
 
 ```{r}
-spain <- sf::st_read(here("homework_3", "gadm41_ESP.gpkg"),
+spain <- sf::st_read("homework_3/gadm41_ESP.gpkg",
                       layer='ADM_ADM_0')
 
-layers <- st_layers(here("homework_3", "gadm41_ESP.gpkg"))
+layers <- st_layers("homework_3/gadm41_ESP.gpkg")
 
-world_cities <- sf::st_read(here("homework_3", "World_Cities", "World_cities.shp"))
+world_cities <- sf::st_read("homework_3/World_Cities/World_cities.shp")
 
-ssp1 <-terra::rast(here("homework_3", "wc2.1_2.5m_tmax_ACCESS-CM2_ssp126_2021-2040.tif"))
+ssp1 <-terra::rast("homework_3/wc2.1_2.5m_tmax_ACCESS-CM2_ssp126_2021-2040.tif")
 
 ssp1_mean <- mean(ssp1)
 
-ssp5 <-terra::rast(here("homework_3", "wc2.1_2.5m_tmax_ACCESS-CM2_ssp585_2021-2040.tif"))
+ssp5 <-terra::rast("homework_3/wc2.1_2.5m_tmax_ACCESS-CM2_ssp585_2021-2040.tif")
 
 ```
 
@@ -38,7 +38,7 @@ spanish_cities <- world_cities %>%
 ```
 
 
-crop and mask rasters
+crop and mask rasters (don't actually need to do this...)
 
 ```{r}
 ####ssp1
@@ -65,22 +65,47 @@ subtract rasters
 
 ```{r}
 
-#### sub
+#### subtract
 diff_climate_model <- exact_spain5 - exact_spain 
+
 ```
 
-rename and extract data from points
-
+rename 
 ```{r}
+
 month <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", 
            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 
 names(diff_climate_model) <- month
 
-spain_city_diff<- terra::extract(diff_climate_model, spanish_cities)
+### same but with tidyterra
 
+#library(tidyterra)
+
+# diff_climate_model <- diff_climate_model%>%
+#   tidyterra::rename(
+#     Jan = tmax01,
+#     Feb = tmax02,
+#     Mar = tmax03,
+#     Apr = tmax04,
+#     May = tmax05,
+#     Jun = tmax06,
+#     Jul = tmax07,
+#     Aug = tmax08,
+#     Sep = tmax09,
+#     Oct = tmax10,
+#     Nov = tmax11,
+#     Dec = tmax12
+#     )
 ```
 
+extract data from points (could have just extracted data and done difference)
+
+
+```{r}
+
+spain_city_diff<- terra::extract(diff_climate_model, spanish_cities)
+```
 
 Join the extracted data back to the point dataset...either this...
 
@@ -167,10 +192,10 @@ How about taking each climate scenario and plotting the distribution of max temp
 
 ####### extra analysis####when i assumed it was just a single year not months
 
-ssp1 <-terra::rast(here("homework_3", "wc2.1_2.5m_tmax_ACCESS-CM2_ssp126_2021-2040.tif"))
-ssp2 <-terra::rast(here("homework_3", "wc2.1_2.5m_tmax_ACCESS-CM2_ssp245_2021-2040.tif"))
-ssp3 <-terra::rast(here("homework_3", "wc2.1_2.5m_tmax_ACCESS-CM2_ssp370_2021-2040.tif"))
-ssp5 <-terra::rast(here("homework_3", "wc2.1_2.5m_tmax_ACCESS-CM2_ssp585_2021-2040.tif"))
+ssp1 <-terra::rast("homework_3/wc2.1_2.5m_tmax_ACCESS-CM2_ssp126_2021-2040.tif")
+ssp2 <-terra::rast("homework_3/wc2.1_2.5m_tmax_ACCESS-CM2_ssp245_2021-2040.tif")
+ssp3 <-terra::rast("homework_3/wc2.1_2.5m_tmax_ACCESS-CM2_ssp370_2021-2040.tif")
+ssp5 <-terra::rast("homework_3/wc2.1_2.5m_tmax_ACCESS-CM2_ssp585_2021-2040.tif")
 
 ssp1mean <- ssp1 %>%
   terra::crop(.,spain)%>%
